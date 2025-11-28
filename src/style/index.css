@@ -1,0 +1,116 @@
+/* imports */
+/* @import "./font.css"; */
+@import "./layout.css";
+@import "./text.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========= Base styles ========= */
+
+@layer base {
+
+    /* Reset */
+    * {
+        @apply m-0 p-0 box-border;
+    }
+
+    html,
+    body {
+        @apply font-din;
+    }
+
+    html {
+        @apply scroll-smooth;
+    }
+
+    body {
+        @apply capitalize antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-bold;
+    }
+
+    p {
+        @apply leading-relaxed;
+    }
+
+    /* a {
+        @apply hover:underline;
+    } */
+
+    button {
+        @apply capitalize;
+    }
+
+    :root {
+        /* --- Accessibility variables --- */
+        --a11y-font-scale: 1;
+        --a11y-line-height-scale: 1;
+        --a11y-letter-spacing: 0;
+        /* 0..30 step – multiplied in body */
+    }
+}
+
+/* خارج الـ layer عشان تبقى global عادي */
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    /* عشان نمنع X-scroll عمومًا */
+}
+
+/* تطبيق الـ variables على الـ body كله */
+body {
+    font-size: calc(1rem * var(--a11y-font-scale));
+    line-height: calc(1.5 * var(--a11y-line-height-scale));
+    letter-spacing: calc(var(--a11y-letter-spacing) * 0.01em);
+}
+
+/* ========= Accessibility classes ========= */
+
+/* Invert colors */
+html.a11y-invert {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+/* Monochrome (grayscale) */
+html.a11y-monochrome {
+    filter: grayscale(1);
+}
+
+/* High dark contrast */
+html.a11y-dark-contrast body {
+    background-color: #111827;
+    /* slate-900 */
+    color: #f9fafb;
+    /* gray-50 */
+}
+
+/* Light high contrast */
+html.a11y-light-contrast body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Highlight links */
+html.a11y-highlight-links a {
+    outline: 2px solid #f6df6b;
+    background-color: #fffcf6;
+    box-shadow: 0 0 0 2px #f6df6b;
+}
+
+/* Highlight headings (h1 فقط) */
+html.a11y-highlight-headings h1 {
+    outline: 2px solid #60a5fa;
+    /* blue-400 */
+    background-color: #eff6ff;
+    /* blue-50 */
+    box-shadow: 0 0 0 2px #60a5fa;
+}
