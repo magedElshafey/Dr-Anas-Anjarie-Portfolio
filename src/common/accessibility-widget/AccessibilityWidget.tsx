@@ -131,7 +131,7 @@ const AccessibilityWidget: React.FC = () => {
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={`
-          fixed z-40 top-16 sm:top-14 ${sidePosButton}
+          fixed z-40 top-24 md:top-28 lg:top-40 ${sidePosButton}
           duration-300 transition-all
           flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center
           rounded-full bg-[#3F6A54] text-white shadow-lg
@@ -147,7 +147,7 @@ const AccessibilityWidget: React.FC = () => {
       {open && (
         <div
           className={`
-            fixed z-40 top-24 sm:top-[70px] ${sidePosPanel}
+            fixed z-40 top-28 md:top-32 lg:top-44 ${sidePosPanel}
             w-[min(320px,100vw-1.5rem)]
             max-h-[90vh]
             rounded-2xl bg-[#111827] text-white shadow-2xl

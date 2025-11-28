@@ -1,6 +1,15 @@
 /* Layout Helpers */
 .containerr {
-    @apply w-full max-w-[1650px] mx-auto px-4;
+    @apply w-full mx-auto px-4
+    /* base: موبايل */
+    sm:px-6
+    /* تابلت صغير */
+    lg:px-8
+    /* لابتوب */
+    2xl:px-10
+    /* شاشات كبيرة جداً */
+    max-w-[1600px];
+    /* أقصى عرض للمحتوى */
 }
 
 .flex-center {

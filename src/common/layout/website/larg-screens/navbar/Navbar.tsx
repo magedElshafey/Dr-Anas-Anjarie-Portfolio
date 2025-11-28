@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import type { NavItem } from "./types/navbar.types";
+import type { NavbarType } from "@/types/navbar.types";
 import BookConsultationButton from "@/common/components/buttons/book-consultation-button/BookConsultationButton";
 import Search from "./search/Search";
 import LanguageDropdown from "../../common/lang-menu/LangMenu";
 import Logo from "@/common/components/logo/Logo";
 import WebsiteLinks from "./links/WebsiteLinks";
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<NavbarType> = ({ logo = "" }) => {
   const location = useLocation();
   const [openMega, setOpenMega] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement | null>(null);
@@ -23,6 +24,7 @@ const Navbar: React.FC = () => {
     }
   };
 
+  // click outside → close mega
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!navRef.current) return;
@@ -36,7 +38,7 @@ const Navbar: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // إغلاق الميجا مينيو عند تغيير الـ route (أي navigation)
+  // route change → close mega
   useEffect(() => {
     setOpenMega(null);
   }, [location.pathname]);
@@ -47,16 +49,23 @@ const Navbar: React.FC = () => {
       className="w-full bg-warmCream border-b border-softGray"
     >
       <div ref={navRef} className="containerr">
-        <div className="flex items-center justify-between h-14 lg:h-16">
-          {/* Logo placeholder */}
-          <Logo />
-          {/* Desktop nav */}
-          <WebsiteLinks
-            handleMainClick={handleMainClick}
-            openMega={openMega}
-            setOpenMega={setOpenMega}
-          />
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between gap-4 h-14 lg:h-16 min-w-0">
+          {/* Logo */}
+          <div className="shrink-0">
+            <Logo logo={logo || ""} />
+          </div>
+
+          {/* Links (center) */}
+          <div className="flex-1 min-w-0">
+            <WebsiteLinks
+              handleMainClick={handleMainClick}
+              openMega={openMega}
+              setOpenMega={setOpenMega}
+            />
+          </div>
+
+          {/* CTA + Search + Lang */}
+          <div className="flex items-center gap-3 shrink-0">
             <BookConsultationButton />
             <Search />
             <LanguageDropdown />

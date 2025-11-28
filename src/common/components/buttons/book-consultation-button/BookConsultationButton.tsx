@@ -1,11 +1,9 @@
 import React from "react";
-
+import { useTranslation } from "react-i18next";
 type BookConsultationButtonProps = {
   href?: string;
   label?: string;
-  /** open link in new tab */
   openInNewTab?: boolean;
-  /** extra tailwind classes (margin / width / etc) */
   className?: string;
 };
 
@@ -15,6 +13,7 @@ const BookConsultationButton: React.FC<BookConsultationButtonProps> = ({
   openInNewTab = true,
   className = "",
 }) => {
+  const { t, i18n } = useTranslation();
   const target = openInNewTab ? "_blank" : "_self";
   const rel = openInNewTab ? "noopener noreferrer" : undefined;
 
@@ -36,7 +35,6 @@ const BookConsultationButton: React.FC<BookConsultationButtonProps> = ({
         ${className}
       `}
     >
-      {/* الخلفية اللي بتتملى من اليسار لليمين */}
       <span
         className="
           absolute inset-y-0 left-0
@@ -50,26 +48,25 @@ const BookConsultationButton: React.FC<BookConsultationButtonProps> = ({
         aria-hidden="true"
       />
 
-      {/* محتوى الزرار (نص + سهم صغير) */}
       <span
         className="
           relative z-10 inline-flex items-center gap-2
-          text-[11px] md:text-xs
-          group-hover:text-white
-          transition-colors
+  text-[0.7rem] md:text-xs
+  group-hover:text-white
+  transition-colors
         "
       >
-        <span>{label}</span>
+        <span>{t(`Global.${label}`)}</span>
         <span
           className="
-            text-[12px]
+          
             translate-x-0
             group-hover:translate-x-0.5
             transition-transform
           "
           aria-hidden="true"
         >
-          →
+          {i18n.language === "en" ? "→" : "←"}
         </span>
       </span>
     </a>

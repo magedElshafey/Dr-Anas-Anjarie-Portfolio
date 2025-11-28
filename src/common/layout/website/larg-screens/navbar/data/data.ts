@@ -122,5 +122,24 @@ export const navConfig: NavItemConfig[] = [
     name: "contact us",
   },
 ];
+export const sidebarConfig: NavItemConfig[] = [
+  {
+    name: "Home",
+    isIndex: true,
+  },
+  {
+    name: "About us",
+  },
 
+  {
+    name: "vision simulator",
+  },
+  {
+    name: "our services",
+  },
+  {
+    name: "contact us",
+  },
+];
 export const navLinks: NavItem[] = buildNav(navConfig);
+export const sidebarLinks: NavItem[] = buildNav(sidebarConfig);

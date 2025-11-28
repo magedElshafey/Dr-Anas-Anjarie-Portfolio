@@ -1,4 +1,4 @@
 export interface NavbarType {
-  logo: string | null;
+  logo?: string | null;
   hotline?: string;
 }

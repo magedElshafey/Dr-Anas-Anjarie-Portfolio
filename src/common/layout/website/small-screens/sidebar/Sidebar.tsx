@@ -1,10 +1,68 @@
+// import { useTranslation } from "react-i18next";
+// import SidebarIntro from "../mobile-navbar/common/SidebarIntro";
+// import { memo } from "react";
+// import Backdrop from "../mobile-navbar/common/Backdrop";
+// import { Link } from "react-router-dom";
+// import LanguageDropdown from "../../common/lang-menu/LangMenu";
+// import { sidebarLinks } from "../../larg-screens/navbar/data/data";
+// interface SidebarProps {
+//   isOpen: boolean;
+//   onClose: () => void;
+// }
+
+// const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+//   const { t } = useTranslation();
+//   return (
+//     <>
+//       <Backdrop
+//         isOpen={isOpen}
+//         onClick={onClose}
+//         aria="close sidebar navigation"
+//       />
+//       <aside
+//         className={`fixed top-0 right-0 h-screen overflow-y-auto w-[85%] bg-white shadow-md border z-40 transform transition-transform duration-300 ${
+//           isOpen ? "translate-x-0" : "-translate-x-full"
+//         }`}
+//         aria-hidden={!isOpen}
+//         aria-label="Sidebar Navigation"
+//       >
+//         <SidebarIntro onClose={onClose} height="h-24">
+//           <div className="flex-center">
+//             <p className="text-white text-xl font-bold">{t("Navbar.Menu")}</p>
+//           </div>
+//         </SidebarIntro>
+
+//         <nav aria-label="Main Navigation" className="mt-2">
+//           <ul className="flex flex-col">
+//             {sidebarLinks.map((item, idx) => (
+//               <li key={idx}>
+//                 <Link
+//                   onClick={onClose}
+//                   to={item.path}
+//                   className="block text-lg font-medium text-transition py-2 border-b ms-2"
+//                 >
+//                   {t(`Navbar.${item.name}`)}
+//                 </Link>
+//               </li>
+//             ))}
+//             <li className="py-2 border-b ms-2">
+//               <LanguageDropdown />
+//             </li>
+//           </ul>
+//         </nav>
+//       </aside>
+//     </>
+//   );
+// };
+
+// export default memo(Sidebar);
 import { useTranslation } from "react-i18next";
-import { navLinks } from "../../../../../data/data";
 import SidebarIntro from "../mobile-navbar/common/SidebarIntro";
 import { memo } from "react";
 import Backdrop from "../mobile-navbar/common/Backdrop";
 import { Link } from "react-router-dom";
 import LanguageDropdown from "../../common/lang-menu/LangMenu";
+import { sidebarLinks } from "../../larg-screens/navbar/data/data";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -12,7 +70,11 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dir = i18n.dir();
+
+  const titleId = "main-sidebar-title";
+
   return (
     <>
       <Backdrop
@@ -20,33 +82,69 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         onClick={onClose}
         aria="close sidebar navigation"
       />
+
       <aside
-        className={`fixed top-0 right-0 h-screen overflow-y-auto w-[85%] bg-white shadow-md border z-40 transform transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`
+          fixed top-0
+          ${dir === "rtl" ? "left-0" : "right-0"}
+          h-screen w-[85%]
+          overflow-y-auto
+          bg-[var(--sidebar-bg)]
+          text-[var(--sidebar-text)]
+          border border-[var(--sidebar-border)]
+          shadow-[var(--sidebar-shadow)]
+          z-40
+          transform transition-transform duration-300
+          ${
+            isOpen
+              ? "translate-x-0"
+              : dir === "rtl"
+              ? "-translate-x-full"
+              : "translate-x-full"
+          }
+        `}
         aria-hidden={!isOpen}
-        aria-label="Sidebar Navigation"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
       >
         <SidebarIntro onClose={onClose} height="h-24">
           <div className="flex-center">
-            <p className="text-white text-xl font-bold">{t("useful links")}</p>
+            <p
+              id={titleId}
+              className="text-[var(--sidebar-header-text)] text-xl font-bold"
+            >
+              {t("Navbar.Menu")}
+            </p>
           </div>
         </SidebarIntro>
 
-        <nav aria-label="Main Navigation" className="mt-2">
+        <nav
+          aria-label={t("Navbar.Menu") ?? "Main Navigation"}
+          className="mt-2"
+        >
           <ul className="flex flex-col">
-            {navLinks.map((item, idx) => (
+            {sidebarLinks.map((item, idx) => (
               <li key={idx}>
                 <Link
                   onClick={onClose}
-                  to={item.link}
-                  className="block text-lg font-medium text-transition py-2 border-b ms-2"
+                  to={item.path}
+                  className="
+                    block py-2 ps-3
+                    border-b border-[var(--sidebar-border)]
+                    text-base font-medium
+                    text-[var(--sidebar-text)]
+                    hover:text-primaryGreen
+                    hover:bg-softGray
+                    transition-colors
+                  "
                 >
-                  {t(item.name)}
+                  {t(`Navbar.${item.name}`)}
                 </Link>
               </li>
             ))}
-            <li className="py-2 border-b ms-2">
+
+            <li className="py-2 ps-3 border-b border-[var(--sidebar-border)]">
               <LanguageDropdown />
             </li>
           </ul>

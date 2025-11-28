@@ -1,5 +1,5 @@
 /* imports */
-/* @import "./font.css"; */
+@import "./font.css";
 @import "./layout.css";
 @import "./text.css";
 
@@ -38,13 +38,14 @@
         @apply font-bold;
     }
 
+    /* بدال leading-relaxed الثابت، نخلي الـ line-height دايناميك حسب الـ var */
     p {
-        @apply leading-relaxed;
+        line-height: calc(1.5 * var(--a11y-line-height-scale));
     }
 
     /* a {
-        @apply hover:underline;
-    } */
+    @apply hover:underline;
+  } */
 
     button {
         @apply capitalize;
@@ -52,25 +53,100 @@
 
     :root {
         /* --- Accessibility variables --- */
+
+        /* لتكبير/تصغير محتوى الصفحة ككل (zoom-ish) */
+        --a11y-scale: 1;
+
+        /* لتكبير/تصغير الـ base font */
         --a11y-font-scale: 1;
+
+        /* لتوسيع/تقليل المسافة بين السطور */
         --a11y-line-height-scale: 1;
+
+        /* 0..30 step – multiplied as em in html */
         --a11y-letter-spacing: 0;
-        /* 0..30 step – multiplied in body */
+
+        /* Footer variables */
+        --footer-bg: #325343;
+        /* primaryDarkGreen */
+        --footer-text: #ffffff;
+        --footer-muted: rgba(255, 255, 255, 0.7);
+        --footer-border: rgba(255, 255, 255, 0.08);
+        --footer-icon-bg: rgba(255, 255, 255, 0.08);
+        /* TopBar variables */
+        --topbar-bg: #325343;
+        /* نفس primaryDarkGreen */
+        --topbar-text: #ffffff;
+        --topbar-accent: #f6df6b;
+        /* نفس softYellow */
+        /* ========== Mega menu color variables ========== */
+        /* الوضع العادي (light / default) */
+        --mm-bg: #ffffff;
+        /* خلفية عامة للميجا مينيو لو حبيت تستخدمها */
+        --mm-surface: #ffffff;
+        /* خلفية الكارد الرئيسي */
+        --mm-border: #e5e7eb;
+        /* border-softGray تقريباً */
+        --mm-heading: #111827;
+        /* slate-900 */
+        --mm-text: #4b5563;
+        /* slate-600 */
+        --mm-muted: #6b7280;
+        /* slate-500 */
+        --mm-link: #3f6a54;
+        /* primaryGreen */
+        --mm-link-hover: #2e4c3d;
+        /* أغمق شوية من الأخضر */
+        --mm-chip-bg: #fffcf6;
+        /* warmCream */
+        --mm-chip-text: #3f6a54;
+        /* primaryGreen */
+        --mm-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+        /* ========= Sidebar / Drawer / Mobile nav vars ========= */
+
+        /* Sidebars (mobile main sidebar + procedures sidebar) */
+        --sidebar-bg: #ffffff;
+        --sidebar-text: #111827;
+        --sidebar-border: #e5e7eb;
+        --sidebar-shadow: 0 20px 45px rgba(15, 23, 42, 0.15);
+
+        /* Sidebar header (SidebarIntro) */
+        --sidebar-header-bg: #3f6a54;
+        /* primaryGreen */
+        --sidebar-header-text: #ffffff;
+
+        /* Mobile bottom nav (MobileWidget) */
+        --mobile-nav-bg: #325343;
+        /* primaryDarkGreen */
+        --mobile-nav-text: #ffffff;
+        --mobile-nav-border: transparent;
+
+        /* Overlay / Backdrop */
+        --overlay-backdrop: rgba(0, 0, 0, 0.5);
     }
 }
 
-/* خارج الـ layer عشان تبقى global عادي */
+/* ========= Global html/body ========= */
+
+/* خارج الـ layer عشان تبقى global عادي ومش متلفة بـ @apply */
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;
     /* عشان نمنع X-scroll عمومًا */
-}
 
-/* تطبيق الـ variables على الـ body كله */
-body {
-    font-size: calc(1rem * var(--a11y-font-scale));
+    font-size: calc(16px * var(--a11y-font-scale));
     line-height: calc(1.5 * var(--a11y-line-height-scale));
     letter-spacing: calc(var(--a11y-letter-spacing) * 0.01em);
+}
+
+/* body هنا بس للـ font-family (والحاجات اللي عملتها بـ @apply فوق فضلّت شغالة) */
+body {
+    font-family: var(--font-din,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif);
 }
 
 /* ========= Accessibility classes ========= */
@@ -91,12 +167,105 @@ html.a11y-dark-contrast body {
     /* slate-900 */
     color: #f9fafb;
     /* gray-50 */
+
+    /* override footer vars في المود ده */
+    --footer-bg: #0f172a;
+    /* slate-900/950 */
+    --footer-text: #f1f5f9;
+    --footer-muted: #cbd5e1;
+    --footer-border: rgba(241, 245, 249, 0.15);
+    --footer-icon-bg: rgba(30, 41, 59, 0.6);
+    /* TopBar في المود الغامق */
+    --topbar-bg: #020617;
+    /* slate-950-ish */
+    --topbar-text: #e5e7eb;
+    /* slate-200 */
+    --topbar-accent: #facc15;
+    /* yellow-400 تقريبًا */
+    --mm-bg: #020617;
+    /* slate-950 */
+    --mm-surface: #020617;
+    --mm-border: rgba(148, 163, 184, 0.5);
+    /* slate-400/500 */
+    --mm-heading: #f9fafb;
+    /* تقريباً white */
+    --mm-text: #e5e7eb;
+    /* gray-200 */
+    --mm-muted: #9ca3af;
+    /* gray-400 */
+    --mm-link: #facc15;
+    /* yellow-400 واضح جداً على الغامق */
+    --mm-link-hover: #fde68a;
+    /* yellow-200 */
+    --mm-chip-bg: #0f172a;
+    /* slate-900 */
+    --mm-chip-text: #fefce8;
+    /* yellow-50 */
+    --mm-shadow: 0 20px 45px rgba(15, 23, 42, 0.9);
+    /* Sidebars in dark mode */
+    --sidebar-bg: #020617;
+    /* slate-950 */
+    --sidebar-text: #e5e7eb;
+    --sidebar-border: rgba(148, 163, 184, 0.6);
+    /* slate-400 */
+    --sidebar-shadow: 0 20px 45px rgba(15, 23, 42, 0.9);
+
+    --sidebar-header-bg: #020617;
+    --sidebar-header-text: #f9fafb;
+
+    /* Mobile nav in dark mode */
+    --mobile-nav-bg: #020617;
+    --mobile-nav-text: #f9fafb;
+    --mobile-nav-border: rgba(148, 163, 184, 0.6);
+
+    /* Backdrop a bit أغمق */
+    --overlay-backdrop: rgba(15, 23, 42, 0.75);
 }
 
 /* Light high contrast */
 html.a11y-light-contrast body {
     background-color: #ffffff;
     color: #000000;
+
+    --footer-bg: #ffffff;
+    --footer-text: #000000;
+    --footer-muted: #374151;
+    --footer-border: #e5e7eb;
+    --footer-icon-bg: #f3f4f6;
+    /* TopBar في المود الفاتح */
+    --topbar-bg: #ffffff;
+    --topbar-text: #111827;
+    --topbar-accent: #f59e0b;
+    /* amber-ish */
+    --mm-bg: #ffffff;
+    --mm-surface: #ffffff;
+    --mm-border: #000000;
+    /* بوردر واضح جداً */
+    --mm-heading: #000000;
+    --mm-text: #111827;
+    --mm-muted: #374151;
+    --mm-link: #000000;
+    --mm-link-hover: #111827;
+    --mm-chip-bg: #f6df6b;
+    /* الأصفر بتاع الباليت */
+    --mm-chip-text: #111827;
+    --mm-shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
+    /* Sidebars in high-contrast light */
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #000000;
+    --sidebar-border: #000000;
+    --sidebar-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+
+    --sidebar-header-bg: #ffffff;
+    --sidebar-header-text: #000000;
+
+    /* Mobile nav in high-contrast light */
+    --mobile-nav-bg: #ffffff;
+    --mobile-nav-text: #000000;
+    --mobile-nav-border: #000000;
+
+    /* Backdrop أوضح شوية */
+    --overlay-backdrop: rgba(0, 0, 0, 0.65);
 }
 
 /* Highlight links */
@@ -104,6 +273,7 @@ html.a11y-highlight-links a {
     outline: 2px solid #f6df6b;
     background-color: #fffcf6;
     box-shadow: 0 0 0 2px #f6df6b;
+    color: black;
 }
 
 /* Highlight headings (h1 فقط) */

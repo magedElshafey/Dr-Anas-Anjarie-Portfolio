@@ -1,31 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
-// import Logo from "../../../../components/logo/Logo";
-// import logo from "../../../../../assets/logo (1).png";
-import SidebarIcon from "../sidebar/SidebarIcon";
-import Sidebar from "../sidebar/Sidebar";
+import { useState, useEffect } from "react";
+
 import type { NavbarType } from "@/types/navbar.types";
-import Search from "../../larg-screens/navbar/search/Search";
 import BookConsultationButton from "@/common/components/buttons/book-consultation-button/BookConsultationButton";
 const MobileNavbar: React.FC<NavbarType> = () => {
-  const [showSidebar, setShowSidebar] = useState(false);
   const [fadeIn, setFadeIn] = useState(false);
-
-  // ✅ Stable callbacks
-  const openSidebar = useCallback(() => setShowSidebar(true), []);
-  const closeSidebar = useCallback(() => setShowSidebar(false), []);
-
-  // ✅ Close sidebar if screen >= lg
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) setShowSidebar(false);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // const logoMemo = useMemo(() => <Logo logo={logo} />, [logo]);
-
   // ✅ Trigger fade-in once on mount
   useEffect(() => {
     const timeout = setTimeout(() => setFadeIn(true), 50);
