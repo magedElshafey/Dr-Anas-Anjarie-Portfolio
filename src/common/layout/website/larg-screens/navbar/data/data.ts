@@ -134,9 +134,7 @@ export const sidebarConfig: NavItemConfig[] = [
   {
     name: "vision simulator",
   },
-  {
-    name: "our services",
-  },
+
   {
     name: "contact us",
   },

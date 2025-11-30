@@ -1,9 +1,10 @@
-import { useState, useId, useEffect } from "react";
+// src/common/components/inputs/MainTextArea.tsx
+import React, { useState, useId, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { IconType } from "react-icons";
-import React from "react";
+import type { IconType } from "react-icons";
 
-interface MainTextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface MainTextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
   Icon?: IconType;
@@ -42,59 +43,99 @@ const MainTextArea = React.forwardRef<HTMLTextAreaElement, MainTextAreaProps>(
     const [suggestions, setSuggestions] = useState<string[]>([]);
 
     useEffect(() => {
-      if (enableAutocomplete && storageKey) {
-        const stored = localStorage.getItem(storageKey);
+      if (!enableAutocomplete || !storageKey) return;
+      if (typeof window === "undefined") return;
+
+      try {
+        const stored = window.localStorage.getItem(storageKey);
         if (stored) setSuggestions(JSON.parse(stored));
+      } catch {
+        // ignore
       }
     }, [enableAutocomplete, storageKey]);
 
     const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      if (enableAutocomplete && storageKey && value) {
-        const updated = Array.from(
-          new Set([value as string, ...suggestions])
-        ).slice(0, 10);
-        setSuggestions(updated);
-        localStorage.setItem(storageKey, JSON.stringify(updated));
+      if (
+        enableAutocomplete &&
+        storageKey &&
+        typeof value === "string" &&
+        value.trim()
+      ) {
+        try {
+          const updated = Array.from(new Set([value, ...suggestions])).slice(
+            0,
+            10
+          );
+          setSuggestions(updated);
+          window.localStorage.setItem(storageKey, JSON.stringify(updated));
+        } catch {
+          // ignore
+        }
       }
       if (onBlur) onBlur(e);
     };
 
-    const resizeClasses = {
+    const resizeClasses: Record<
+      NonNullable<MainTextAreaProps["resize"]>,
+      string
+    > = {
       none: "resize-none",
-      both: "resize-none",
-      horizontal: "resize-none",
-      vertical: "resize-none",
+      both: "resize-both",
+      horizontal: "resize-x",
+      vertical: "resize-y",
     };
+
+    const hasError = Boolean(error);
 
     return (
       <div className="w-full">
         {label && (
           <label
-            tabIndex={-1}
             htmlFor={textareaId}
-            className="text-sm md:text-base block mb-2 font-medium text-gray-700"
+            className="text-sm md:text-base block mb-2 font-medium"
+            style={{ color: "var(--field-label)" }}
           >
             {t(label)}
-            {required && <span className="text-red-500 ml-1">*</span>}
+            {required && (
+              <span
+                className="ml-1"
+                style={{ color: "var(--field-error-text)" }}
+              >
+                *
+              </span>
+            )}
           </label>
         )}
 
         <div
-          className={`transition duration-150 rounded-lg w-full py-3 px-4 flex items-start gap-3 bg-background-gray
-          ${disabled ? "opacity-50 cursor-not-allowed" : ""}
-          ${
-            error
-              ? "ring-2 ring-red-500"
-              : "focus-within:ring-2 focus-within:ring-orangeColor"
-          }`}
+          className={`
+            w-full flex items-start gap-3 rounded-xl px-4 py-3
+            bg-[var(--field-bg)]
+            border
+            ${
+              hasError
+                ? "border-[var(--field-error-border)] ring-1 ring-[var(--field-error-ring)]"
+                : "border-[var(--field-border)] focus-within:ring-2 focus-within:ring-[var(--field-focus-ring)] focus-within:border-[var(--field-focus-border)]"
+            }
+            transition-colors duration-150
+            ${
+              disabled
+                ? "opacity-60 cursor-not-allowed bg-[var(--field-bg-disabled)]"
+                : ""
+            }
+          `}
         >
           {Icon && (
-            <Icon size={20} className="text-text-gray mt-1 flex-shrink-0" aria-hidden="true" />
+            <Icon
+              size={20}
+              className="mt-1 shrink-0"
+              style={{ color: "var(--field-icon)" }}
+              aria-hidden="true"
+            />
           )}
 
           <textarea
             id={textareaId}
-            tabIndex={0}
             ref={ref}
             value={value}
             onChange={onChange}
@@ -103,13 +144,23 @@ const MainTextArea = React.forwardRef<HTMLTextAreaElement, MainTextAreaProps>(
             required={required}
             disabled={disabled}
             rows={rows}
-            aria-invalid={!!error}
-            aria-describedby={error ? `${textareaId}-error` : undefined}
-            className={`flex-1 outline-none w-full bg-transparent border-none text-[#333333] placeholder:text-gray-400 ${resizeClasses[resize]} max-h-[300px] overflow-y-auto`}
+            aria-invalid={hasError}
+            aria-required={required}
+            aria-describedby={hasError ? `${textareaId}-error` : undefined}
+            className={`
+              flex-1 w-full bg-transparent border-none outline-none
+              text-sm md:text-base max-h-[300px] overflow-y-auto
+              ${resizeClasses[resize]}
+            `}
+            style={{
+              color: "var(--field-text)",
+              caretColor: "var(--field-focus-border)",
+            }}
             {...rest}
           />
         </div>
 
+        {/* datalist technically مش بيشتغل مع textarea, بس لو عايز تخزّن history برضه نخليه موجود */}
         {enableAutocomplete && (
           <datalist id={`${textareaId}-list`}>
             {suggestions.map((item, i) => (
@@ -120,15 +171,16 @@ const MainTextArea = React.forwardRef<HTMLTextAreaElement, MainTextAreaProps>(
 
         <div
           className={`transition-all duration-300 ease-in-out overflow-hidden ${
-            error ? "max-h-10 opacity-100 mt-1" : "max-h-0 opacity-0"
+            hasError ? "max-h-10 opacity-100 mt-1" : "max-h-0 opacity-0"
           }`}
         >
           <p
             id={`${textareaId}-error`}
-            className="text-red-500 text-xs"
+            className="text-xs"
+            style={{ color: "var(--field-error-text)" }}
             role="alert"
           >
-            {error && t(error)}
+            {hasError && t(error!)}
           </p>
         </div>
       </div>

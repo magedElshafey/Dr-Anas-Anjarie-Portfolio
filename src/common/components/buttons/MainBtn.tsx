@@ -1,78 +1,188 @@
+import React from "react";
 import { useTranslation } from "react-i18next";
-import React, { PropsWithChildren } from "react";
 import { cv } from "css-variants";
 import { twMerge } from "tailwind-merge";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const themes = {
-  main: "bg-orangeColor text-white",
-  secondary: "bg-black text-white",
-  outline: "border border-gray-300 text-gray-700 hover:bg-gray-50",
-  danger: "bg-red-600 text-white hover:bg-red-700",
-};
+  main: `
+    bg-[var(--btn-main-bg)]
+    text-[var(--btn-main-text)]
+    border-[var(--btn-main-border)]
+  `,
+  secondary: `
+    bg-[var(--btn-secondary-bg)]
+    text-[var(--btn-secondary-text)]
+    border-[var(--btn-secondary-border)]
+  `,
+  outline: `
+    bg-[var(--btn-outline-bg)]
+    text-[var(--btn-outline-text)]
+    border-[var(--btn-outline-border)]
+  `,
+  danger: `
+    bg-[var(--btn-danger-bg)]
+    text-[var(--btn-danger-text)]
+    border-[var(--btn-danger-border)]
+  `,
+} as const;
+
+type ThemeKey = keyof typeof themes;
+type VariantKey = "pill" | "solid" | "chip";
 
 const buttonVariants = cv({
-  base: "px-2 py-2 rounded font-bold disabled:cursor-not-allowed transition-all disabled:bg-auto w-full md:w-[220px] flex-center transition disabled:bg-opacity-40",
+  base: `
+    relative inline-flex items-center justify-center
+    rounded-full font-semibold
+    border transition-all duration-300
+    disabled:cursor-not-allowed disabled:opacity-50
+    overflow-hidden group select-none
+    focus:outline-none focus-visible:ring-2 
+    focus-visible:ring-offset-2 focus-visible:ring-primaryGreen
+  `,
   variants: {
-    theme: {
-      ...themes,
+    theme: { ...themes },
+    variant: {
+      pill: `
+        px-5 md:px-6 py-2.5
+        text-xs md:text-sm
+      `,
+      solid: `
+        px-5 md:px-6 py-2.5
+        text-xs md:text-sm
+      `,
+      chip: `
+        px-3 py-1.5
+        text-[0.7rem] md:text-xs
+      `,
     },
   },
   defaultVariants: {
     theme: "main",
+    variant: "pill",
   },
 });
 
-interface MainBtnProps {
+export interface MainBtnProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
-  onClick?: (
-    e: React.MouseEvent<HTMLButtonElement>,
-    ...args: any[]
-  ) => Promise<string | void> | string | void;
-  type?: "button" | "submit" | "reset";
   isPending?: boolean;
-  bg?: string;
-  className?: string;
-  theme?: keyof typeof themes;
-  disabled?: boolean;
+  theme?: ThemeKey;
+  variant?: VariantKey;
+  hasIcon?: boolean;
+  icon?: React.ReactNode;
+  showArrow?: boolean;
 }
 
-const MainBtn: React.FC<PropsWithChildren<MainBtnProps>> = ({
+const MainBtn: React.FC<React.PropsWithChildren<MainBtnProps>> = ({
   text,
-  onClick,
-  type = "button",
   isPending = false,
   className,
+  theme = "main",
+  variant = "pill",
+  hasIcon = false,
+  icon,
   children,
-  theme,
-  disabled = false,
+  disabled,
+  showArrow = true,
+  ...rest
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const arrow = i18n.language === "en" ? "→" : "←";
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (onClick) {
-      onClick(e);
-    }
-  };
+  const isChip = variant === "chip";
+  const isPill = variant === "pill";
+
+  // fill لون الخلفية في حالة الـ pill بس
+  const fillColorClass =
+    theme === "main"
+      ? "bg-primaryGreen"
+      : theme === "secondary"
+      ? "bg-white"
+      : "bg-primaryGreen";
+  const fillTextClass =
+    theme === "main"
+      ? "group-hover:text-white"
+      : "group-hover:text-primaryGreen";
+  const label = text && !children ? t(text) : children || "";
 
   return (
     <button
       disabled={isPending || disabled}
-      type={type}
-      onClick={handleClick}
       aria-busy={isPending}
-      aria-label={isPending ? t("Submitting, please wait") : t(text || "")}
-      className={`${twMerge(buttonVariants({ theme, className }))}`}
+      aria-label={
+        isPending
+          ? t("Submitting, please wait")
+          : typeof label === "string"
+          ? label
+          : undefined
+      }
+      className={twMerge(buttonVariants({ theme, variant }), className)}
+      {...rest}
     >
-      {isPending ? (
-        <AiOutlineLoading3Quarters
-          className="animate-spin"
-          size={20}
+      {/* ✅ Background hover fill (pill فقط) */}
+      {isPill && (
+        <span
+          className={`
+            absolute inset-y-0 left-0
+            w-0
+            group-hover:w-full
+            transition-[width]
+            duration-300 ease-out
+            ${fillColorClass}
+          `}
           aria-hidden="true"
         />
-      ) : (
-        children || t(text || "")
       )}
+
+      {/* ✅ محتوى الزرار */}
+      <span
+        className={twMerge(
+          `
+          relative z-10 inline-flex items-center gap-2
+          text-[0.7rem] md:text-xs
+          transition-colors
+        `,
+          isPill ? fillTextClass : "",
+          isChip
+            ? `
+              text-[var(--vision-chip-text)]
+            `
+            : ""
+        )}
+      >
+        {isPending ? (
+          <AiOutlineLoading3Quarters
+            className="animate-spin"
+            size={18}
+            aria-hidden="true"
+          />
+        ) : (
+          <>
+            {hasIcon && icon && (
+              <span className="text-base" aria-hidden="true">
+                {icon}
+              </span>
+            )}
+
+            {label}
+
+            {/* السهم – مش ضروري في الـ chip */}
+            {!isChip && showArrow && (
+              <span
+                className="
+                  translate-x-0
+                  group-hover:translate-x-0.5
+                  transition-transform
+                "
+                aria-hidden="true"
+              >
+                {arrow}
+              </span>
+            )}
+          </>
+        )}
+      </span>
     </button>
   );
 };

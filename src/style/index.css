@@ -123,6 +123,138 @@
 
         /* Overlay / Backdrop */
         --overlay-backdrop: rgba(0, 0, 0, 0.5);
+        /* Vision simulator palette (default) */
+        --vision-bg: #f5f7f5;
+        --vision-panel-bg: #ffffff;
+        --vision-panel-border: #e5e7eb;
+        --vision-text-main: #111827;
+        --vision-text-muted: #6b7280;
+        --vision-chip-bg: #f3f4f6;
+        --vision-chip-active-bg: #3f6a54;
+        --vision-chip-active-text: #ffffff;
+        --hero-bg: #fdf9f2;
+        /* warmCream */
+        --hero-text-main: #143423;
+        /* primaryDarkGreen */
+        --hero-text-muted: #4b5563;
+        /* slate-600 */
+        /* --- Button color system (normal mode) --- */
+        --btn-main-bg: #ffffff;
+        --btn-main-text: #325343;
+        /* primaryDarkGreen-ish */
+        --btn-main-border: #3f6a54;
+        /* primaryGreen */
+
+        --btn-secondary-bg: #3f6a54;
+        /* primaryGreen */
+        --btn-secondary-text: #ffffff;
+        --btn-secondary-border: #3f6a54;
+
+        --btn-outline-bg: #ffffff;
+        --btn-outline-text: #374151;
+        /* slate-700 */
+        --btn-outline-border: #d1d5db;
+        /* slate-300 */
+
+        --btn-danger-bg: #b91c1c;
+        --btn-danger-text: #ffffff;
+        --btn-danger-border: #b91c1c;
+
+        /* Vision chips (لو لسه مش عندك) */
+        --vision-chip-bg: #f9fafb;
+        --vision-chip-text: #111827;
+        --vision-chip-active-bg: #3f6a54;
+        --vision-chip-active-text: #ffffff;
+        --vision-panel-border: #e5e7eb;
+        /* ========= Why Choose Us section vars ========= */
+        --why-bg: #f9f5ec;
+        /* warmCream تقريبًا */
+        --why-border: #e5e7eb;
+
+        --why-title: #12352a;
+        /* قريب من primaryDarkGreen */
+        --why-text-main: #111827;
+        /* slate-900 */
+        --why-text-muted: #4b5563;
+        /* slate-600 */
+
+        --why-accent: #3f6a54;
+        /* primaryGreen */
+        --why-pill-dot: #3f6a54;
+
+        --why-card-bg: #ffffff;
+        --why-card-border: rgba(148, 163, 184, 0.7);
+        /* slate-400-ish */
+        --proc-bg: #faf5ee;
+        /* خلفية مختلفة عن الهيرو و Why choose us */
+        --proc-card-bg: #ffffff;
+        --proc-card-border: rgba(15, 23, 42, 0.06);
+        --proc-card-muted: #6b7280;
+        --proc-card-title: #1f2937;
+        --proc-card-accent: #3f6a54;
+        --proc-list-bg: #fdfaf4;
+        /* خلفية الصفحة */
+        --proc-list-hero-bg: #fffaf1;
+        /* الهيرو */
+        --proc-list-card-bg: #ffffff;
+        --proc-list-card-border: rgba(15, 23, 42, 0.08);
+        --proc-list-card-muted: #6b7280;
+        /* gray-500 */
+        --proc-list-tag-bg: rgba(63, 106, 84, 0.08);
+        /* primaryGreen soft */
+        --proc-list-tag-text: #325343;
+        /* Section / typography tokens (linked to accessibility tool) */
+        --section-title-color: #325343;
+        /* قريب من primaryDarkGreen */
+        --section-body-color: #374151;
+        /* gray-700 */
+        --section-muted-color: #6b7280;
+        /* gray-500 */
+
+        --section-chip-bg: #e6f3ec;
+        /* خلفية الـ intro chip */
+        --section-chip-text: #3f6a54;
+        /* primaryGreen */
+        --section-chip-dot: #3f6a54;
+        /* نفس اللون عشان التناسق */
+
+        --section-bullet-color: #3f6a54;
+
+        /* لو حابب تستعملها في future */
+        --section-max-width: 48rem;
+        --proc-page-bg: #f6f4ef;
+        --proc-section-bg: #ffffff;
+        --proc-text-main: #0f172a;
+
+        --proc-hero-bg: #020617;
+        --proc-hero-text: #f9fafb;
+        --proc-hero-card-bg: #020617;
+
+        --proc-card-bg: #ffffff;
+        --proc-faq-bg: #f9fafb;
+        --proc-cta-bg: #0f172a;
+        --field-bg: #f9fafb;
+        /* قريب من bg-slate-50 */
+        --field-border: #e5e7eb;
+        /* softGray-ish */
+        --field-text: #111827;
+        /* primary text */
+        --field-placeholder: #9ca3af;
+        /* gray-400 */
+        --field-label: #374151;
+        /* gray-700 */
+
+        --field-focus-border: #16a34a;
+        /* primaryGreen */
+        --field-focus-ring: #16a34a;
+        --field-icon: #6b7280;
+        /* gray-500 */
+
+        --field-error-border: #dc2626;
+        --field-error-ring: #dc2626;
+        --field-error-text: #b91c1c;
+
+        --field-bg-disabled: #f3f4f6;
     }
 }
 
@@ -218,8 +350,108 @@ html.a11y-dark-contrast body {
     --mobile-nav-text: #f9fafb;
     --mobile-nav-border: rgba(148, 163, 184, 0.6);
 
+
     /* Backdrop a bit أغمق */
     --overlay-backdrop: rgba(15, 23, 42, 0.75);
+    --vision-bg: #020617;
+    /* slate-950 */
+    --vision-panel-bg: #020617;
+    --vision-panel-border: #1f2937;
+    /* gray-800 */
+    --vision-text-main: #f9fafb;
+    --vision-text-muted: #9ca3af;
+    --vision-chip-bg: #111827;
+    --vision-chip-active-bg: #22c55e;
+    --vision-chip-active-text: #022c22;
+    --hero-bg: #020617;
+    --hero-text-main: #f9fafb;
+    --hero-text-muted: #e5e7eb;
+    --btn-main-bg: transparent;
+    --btn-main-text: #f9fafb;
+    --btn-main-border: #f9fafb;
+
+    --btn-secondary-bg: #f9fafb;
+    --btn-secondary-text: #0f172a;
+    --btn-secondary-border: #f9fafb;
+
+    --btn-outline-bg: transparent;
+    --btn-outline-text: #f9fafb;
+    --btn-outline-border: #f9fafb;
+
+    --btn-danger-bg: #b91c1c;
+    --btn-danger-text: #f9fafb;
+    --btn-danger-border: #fecaca;
+
+    --vision-chip-bg: #020617;
+    --vision-chip-text: #e5e7eb;
+    --vision-chip-active-bg: #facc15;
+    --vision-chip-active-text: #0f172a;
+    /* Why Choose Us overrides */
+    --why-bg: #020617;
+    /* slate-950 */
+    --why-border: #1f2937;
+    /* gray-800 */
+    --why-title: #f9fafb;
+    /* white */
+    --why-text-main: #e5e7eb;
+    --why-text-muted: #9ca3af;
+    --why-accent: #facc15;
+    /* yellow-400 علشان تباين عالي */
+    --why-pill-dot: #facc15;
+    --why-card-bg: #020617;
+    --why-card-border: #4b5563;
+    --proc-bg: #020617;
+    --proc-card-bg: #020617;
+    --proc-card-border: rgba(148, 163, 184, 0.4);
+    --proc-card-muted: #e5e7eb;
+    --proc-card-title: #f9fafb;
+    --proc-card-accent: #facc15;
+    --proc-list-bg: #020617;
+    /* slate-950 */
+    --proc-list-hero-bg: #020617;
+    --proc-list-card-bg: #020617;
+    --proc-list-card-border: rgba(148, 163, 184, 0.45);
+    --proc-list-card-muted: #e5e7eb;
+    --proc-list-tag-bg: rgba(148, 163, 184, 0.18);
+    --proc-list-tag-text: #e5e7eb;
+    /* ... اللي عندك أصلاً ... */
+    --section-title-color: #f9fafb;
+    /* almost white */
+    --section-body-color: #e5e7eb;
+    --section-muted-color: #d1d5db;
+
+    --section-chip-bg: #0f172a;
+    --section-chip-text: #facc15;
+    --section-chip-dot: #facc15;
+
+    --section-bullet-color: #facc15;
+    --proc-page-bg: #020617;
+    --proc-section-bg: #020617;
+    --proc-text-main: #f9fafb;
+
+    --proc-hero-bg: #020617;
+    --proc-hero-text: #f9fafb;
+    --proc-hero-card-bg: #020617;
+
+    --proc-card-bg: #020617;
+    --proc-faq-bg: #020617;
+    --proc-cta-bg: #0b1120;
+    --field-bg: #020617;
+    --field-border: #475569;
+    --field-text: #f9fafb;
+    --field-placeholder: #94a3b8;
+    --field-label: #e5e7eb;
+
+    --field-focus-border: #facc15;
+    /* softYellow */
+    --field-focus-ring: #facc15;
+    --field-icon: #e5e7eb;
+
+    --field-error-border: #f97373;
+    --field-error-ring: #f97373;
+    --field-error-text: #fecaca;
+
+    --field-bg-disabled: #111827;
 }
 
 /* Light high contrast */
@@ -266,6 +498,78 @@ html.a11y-light-contrast body {
 
     /* Backdrop أوضح شوية */
     --overlay-backdrop: rgba(0, 0, 0, 0.65);
+    --vision-bg: #ffffff;
+    --vision-panel-bg: #ffffff;
+    --vision-panel-border: #111827;
+    --vision-text-main: #000000;
+    --vision-text-muted: #111827;
+    --vision-chip-bg: #ffffff;
+    --vision-chip-active-bg: #000000;
+    --vision-chip-active-text: #ffffff;
+    --hero-bg: #ffffff;
+    --hero-text-main: #000000;
+    --hero-text-muted: #374151;
+    /* Why Choose Us overrides */
+    --why-bg: #ffffff;
+    --why-border: #111827;
+    --why-title: #000000;
+    --why-text-main: #111827;
+    --why-text-muted: #1f2937;
+    --why-accent: #111827;
+    --why-pill-dot: #111827;
+    --why-card-bg: #ffffff;
+    --why-card-border: #111827;
+    --proc-bg: #ffffff;
+    --proc-card-bg: #ffffff;
+    --proc-card-border: #111827;
+    --proc-card-muted: #374151;
+    --proc-card-title: #000000;
+    --proc-card-accent: #0f172a;
+    --proc-list-bg: #ffffff;
+    --proc-list-hero-bg: #f9fafb;
+    --proc-list-card-bg: #ffffff;
+    --proc-list-card-border: #d1d5db;
+    --proc-list-card-muted: #374151;
+    --proc-list-tag-bg: #e5f3ea;
+    --proc-list-tag-text: #14532d;
+    /* ... اللي عندك أصلاً ... */
+    --section-title-color: #000000;
+    --section-body-color: #111827;
+    --section-muted-color: #4b5563;
+
+    --section-chip-bg: #fefce8;
+    /* yellow-50 */
+    --section-chip-text: #854d0e;
+    /* amber-800 */
+    --section-chip-dot: #854d0e;
+
+    --section-bullet-color: #854d0e;
+    --proc-page-bg: #ffffff;
+    --proc-section-bg: #ffffff;
+    --proc-text-main: #000000;
+
+    --proc-hero-bg: #ffffff;
+    --proc-hero-text: #000000;
+    --proc-hero-card-bg: #ffffff;
+
+    --proc-card-bg: #ffffff;
+    --proc-faq-bg: #f3f4f6;
+    --proc-cta-bg: #111827;
+    --field-bg: #ffffff;
+    --field-border: #000000;
+    --field-text: #000000;
+    --field-placeholder: #4b5563;
+    --field-label: #000000;
+
+    --field-focus-border: #111827;
+    --field-focus-ring: #111827;
+    --field-icon: #111827;
+
+    --field-error-border: #b91c1c;
+    --field-error-ring: #b91c1c;
+    --field-error-text: #b91c1c;
+
+    --field-bg-disabled: #e5e7eb;
 }
 
 /* Highlight links */
@@ -281,6 +585,7 @@ html.a11y-highlight-headings h1 {
     outline: 2px solid #60a5fa;
     /* blue-400 */
     background-color: #eff6ff;
+    color: black !important;
     /* blue-50 */
     box-shadow: 0 0 0 2px #60a5fa;
 }

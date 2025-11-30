@@ -21,23 +21,14 @@ export const websiteRoutes: RouteObject = {
     },
 
     {
-      path: "faq",
-      element: lazyLoad(() => import("../features/static-pages/pages/faq/Faq")),
-      handle: {
-        breadcrumb: "faq",
-      },
-    },
-    {
-      path: "static/:slug",
+      path: "procedures",
       element: lazyLoad(
-        () => import("../features/static-pages/pages/static-pages/ShowPage")
+        () => import("../features/producers/pages/ProceduersPage")
       ),
       handle: {
-        breadcrumb: "static page name",
-        queryKey: [apiRoutes.static_page],
+        breadcrumb: "procedures",
       },
     },
-
     {
       path: "contact-us",
       element: lazyLoad(
@@ -48,23 +39,24 @@ export const websiteRoutes: RouteObject = {
         breadcrumb: "contact",
       },
     },
-
     {
-      path: "blogs",
+      path: "vision-simulator",
       element: lazyLoad(
-        () => import("../features/static-pages/pages/blogs/Blogs")
+        () => import("../features/vision-simulator/pages/VisionSimulator")
       ),
+
       handle: {
-        breadcrumb: "blogs",
+        breadcrumb: "vision simulator",
       },
     },
+
     {
-      path: "blogs/:slugAndId",
+      path: "procedures/:slug/:slug?",
       element: lazyLoad(
-        () => import("../features/static-pages/pages/blog/Blog")
+        () => import("../features/producers/pages/ProcedureDetailsPage")
       ),
       handle: {
-        breadcrumb: "blog name",
+        breadcrumb: "procedures name",
         queryKey: [apiRoutes.blogs],
       },
     },

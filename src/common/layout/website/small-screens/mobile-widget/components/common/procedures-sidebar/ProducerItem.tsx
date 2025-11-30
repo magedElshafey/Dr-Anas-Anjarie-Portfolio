@@ -1,6 +1,6 @@
 import { memo, useState, useCallback } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import type { ProcedureListType } from "@/features/procedures/types/ProcedureList.types";
+import type { ProcedureListType } from "@/features/producers/types/ProcedureList.types";
 
 interface ProcedureItemProps {
   category: ProcedureListType;
