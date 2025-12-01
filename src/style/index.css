@@ -16,10 +16,6 @@
         @apply m-0 p-0 box-border;
     }
 
-    html,
-    body {
-        @apply font-din;
-    }
 
     html {
         @apply scroll-smooth;
@@ -255,6 +251,10 @@
         --field-error-text: #b91c1c;
 
         --field-bg-disabled: #f3f4f6;
+        --font-en: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            sans-serif;
+        --font-ar: "Cairo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            sans-serif;
     }
 }
 
@@ -271,15 +271,19 @@ html {
     letter-spacing: calc(var(--a11y-letter-spacing) * 0.01em);
 }
 
-/* body هنا بس للـ font-family (والحاجات اللي عملتها بـ @apply فوق فضلّت شغالة) */
-body {
-    font-family: var(--font-din,
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif);
+/* اللغة الإنجليزية: Inter + LTR */
+html[lang="en"] body {
+    font-family: var(--font-en);
+    direction: ltr;
 }
+
+/* اللغة العربية: Cairo + RTL */
+html[lang="ar"] body {
+    font-family: var(--font-ar);
+    direction: rtl;
+}
+
+
 
 /* ========= Accessibility classes ========= */
 

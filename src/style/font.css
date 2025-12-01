@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
     font-family: "DINNextLTArabic";
     src: url("/fonts/ArbFONTS-DINNextLTArabic-UltraLight-1.woff2") format("woff2");
     font-weight: 200;
@@ -52,4 +52,8 @@
     font-weight: 900;
     font-style: normal;
     font-display: swap;
-}
+} */
+
+/* font.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap");

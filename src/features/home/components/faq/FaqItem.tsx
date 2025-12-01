@@ -1,24 +1,20 @@
+//
+
 // src/features/home/components/faq/FaqItem.tsx
-import React, { useState, useId } from "react";
+import React, { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useReducedMotion } from "framer-motion";
-
-export type FaqItemType = {
-  id: number;
-  questionKey: string;
-  defaultQuestion: string;
-  answerKey: string;
-  defaultAnswer: string;
-};
+import type { FaqItemType } from "./faqData";
 
 type Props = {
   item: FaqItemType;
+  index: number;
 };
 
-const FaqItem: React.FC<Props> = ({ item }) => {
+const FaqItem: React.FC<Props> = ({ item, index }) => {
   const { t } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(index === 0); // أول سؤال مفتوح
   const panelId = useId();
   const buttonId = useId();
 
@@ -34,44 +30,57 @@ const FaqItem: React.FC<Props> = ({ item }) => {
         overflow-hidden
       "
     >
-      <dt>
-        <button
-          id={buttonId}
-          type="button"
-          onClick={toggle}
-          aria-expanded={open}
-          aria-controls={panelId}
-          className="
-            w-full
-            flex items-center justify-between gap-3
-            px-4 md:px-5 py-3.5 md:py-4
-            text-left
-            focus:outline-none
-            focus-visible:ring-2
-            focus-visible:ring-[var(--focus-ring,#0f766e)]
-            focus-visible:ring-offset-2
-            focus-visible:ring-offset-[var(--section-faq-bg,#FFFDF6)]
-          "
-        >
+      <button
+        id={buttonId}
+        type="button"
+        onClick={toggle}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="
+          w-full
+          flex items-start justify-between gap-3
+          px-4 md:px-5 py-3.5 md:py-4
+          text-left
+          focus:outline-none
+          focus-visible:ring-2
+          focus-visible:ring-[var(--focus-ring,#0f766e)]
+          focus-visible:ring-offset-2
+          focus-visible:ring-offset-[var(--section-faq-bg,#FFFDF6)]
+        "
+      >
+        <div className="flex gap-3">
+          <div
+            aria-hidden="true"
+            className="
+              mt-0.5
+              flex h-6 w-6 items-center justify-center
+              rounded-full
+              bg-primaryGreen/10
+              text-[11px] font-semibold text-primaryDarkGreen
+            "
+          >
+            {index + 1}
+          </div>
           <span className="text-sm md:text-base font-semibold text-[var(--text-main,#111827)]">
             {t(item.questionKey, item.defaultQuestion)}
           </span>
-          <span
-            aria-hidden="true"
-            className="
-              inline-flex items-center justify-center
-              h-7 w-7 rounded-full
-              border border-[var(--border-subtle,#E5E7EB)]
-              bg-[var(--btn-secondary-bg,white)]
-              text-xs font-semibold text-[var(--text-main,#111827)]
-            "
-          >
-            {open ? "−" : "+"}
-          </span>
-        </button>
-      </dt>
+        </div>
+        <span
+          aria-hidden="true"
+          className="
+            mt-0.5
+            inline-flex h-6 w-6 items-center justify-center
+            rounded-full
+            border border-[var(--border-subtle,#E5E7EB)]
+            bg-[var(--btn-secondary-bg,white)]
+            text-xs font-semibold text-[var(--text-main,#111827)]
+          "
+        >
+          {open ? "−" : "+"}
+        </span>
+      </button>
 
-      <dd
+      <div
         id={panelId}
         role="region"
         aria-labelledby={buttonId}
@@ -83,16 +92,14 @@ const FaqItem: React.FC<Props> = ({ item }) => {
         <div
           className={`
             text-xs md:text-sm text-[var(--text-muted,#4B5563)]
-            transition-[max-height,opacity]
-            duration-200 ease-out
             ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
             overflow-hidden
+            ${shouldReduceMotion ? "" : "transition-all duration-200 ease-out"}
           `}
-          style={shouldReduceMotion ? { transition: "none" } : undefined}
         >
           <p className="pt-1.5">{t(item.answerKey, item.defaultAnswer)}</p>
         </div>
-      </dd>
+      </div>
     </div>
   );
 };

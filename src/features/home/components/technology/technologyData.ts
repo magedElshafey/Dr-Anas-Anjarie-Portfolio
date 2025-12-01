@@ -1,4 +1,3 @@
-// src/features/home/components/technology/technologyData.ts
 export type TechnologyPoint = {
   key: string;
   defaultText: string;
@@ -6,138 +5,93 @@ export type TechnologyPoint = {
 
 export type TechnologyItem = {
   id: number;
-  categoryKey: string;
-  defaultCategory: string;
+  labelKey: string;
+  defaultLabel: string;
   titleKey: string;
   defaultTitle: string;
   points: TechnologyPoint[];
-  noteKey?: string;
-  defaultNote?: string;
+  badgeKey?: string;
+  defaultBadge?: string;
 };
 
 export const technologyItems: TechnologyItem[] = [
   {
     id: 1,
-    categoryKey: "Technology.category.diagnostics",
-    defaultCategory: "Diagnostics",
-    titleKey: "Technology.item1.title",
-    defaultTitle: "High-resolution ocular imaging (OCT)",
+    labelKey: "Technology.labelDiagnostics",
+    defaultLabel: "Imaging",
+    titleKey: "Technology.octTitle",
+    defaultTitle: "High-resolution OCT retinal imaging",
     points: [
       {
-        key: "Technology.item1.point1",
+        key: "Technology.octPoint1",
         defaultText:
-          "Detailed scans of the retina, macula and optic nerve to detect subtle changes early.",
+          "Cross-section scans of the macula, retina and optic nerve to detect subtle changes early.",
       },
       {
-        key: "Technology.item1.point2",
+        key: "Technology.octPoint2",
         defaultText:
-          "Helps monitor conditions such as macular degeneration, diabetic eye disease and glaucoma.",
+          "Helps monitor macular degeneration, diabetic eye disease and glaucoma over time.",
       },
     ],
-    noteKey: "Technology.item1.note",
-    defaultNote: "Non-contact, painless imaging usually completed in minutes.",
+    badgeKey: "Technology.badgeNonContact",
+    defaultBadge: "Painless, non-contact test",
   },
   {
     id: 2,
-    categoryKey: "Technology.category.biometry",
-    defaultCategory: "Biometry & lens planning",
-    titleKey: "Technology.item2.title",
-    defaultTitle: "Modern biometry for cataract & lens surgery",
+    labelKey: "Technology.labelBiometry",
+    defaultLabel: "Biometry",
+    titleKey: "Technology.biometryTitle",
+    defaultTitle: "Modern biometry for lens power planning",
     points: [
       {
-        key: "Technology.item2.point1",
+        key: "Technology.biometryPoint1",
         defaultText:
-          "Measures the length and shape of your eye to calculate the most suitable lens power.",
+          "Measures the length and curvature of your eye to calculate the most suitable lens.",
       },
       {
-        key: "Technology.item2.point2",
+        key: "Technology.biometryPoint2",
         defaultText:
-          "Supports monofocal, multifocal and toric lens choices tailored to your lifestyle.",
+          "Supports monofocal, multifocal and toric lenses tailored to your lifestyle.",
       },
     ],
-    noteKey: "Technology.item2.note",
-    defaultNote:
-      "Accurate measurements are essential for sharp distance and near vision after surgery.",
+    badgeKey: "Technology.badgePlanning",
+    defaultBadge: "Personalised lens calculations",
   },
   {
     id: 3,
-    categoryKey: "Technology.category.surgery",
-    defaultCategory: "Surgical platforms",
-    titleKey: "Technology.item3.title",
-    defaultTitle: "Micro-incision cataract & lens surgery systems",
-    points: [
-      {
-        key: "Technology.item3.point1",
-        defaultText:
-          "Small, self-sealing incisions designed to support quicker recovery and visual stability.",
-      },
-      {
-        key: "Technology.item3.point2",
-        defaultText:
-          "Advanced fluid control and lens delivery systems to support safe, predictable procedures.",
-      },
-    ],
-    noteKey: "Technology.item3.note",
-    defaultNote:
-      "Your surgeon will choose the platform best suited to your eyes and overall health.",
-  },
-  {
-    id: 4,
-    categoryKey: "Technology.category.cornea",
-    defaultCategory: "Corneal assessment",
-    titleKey: "Technology.item4.title",
+    labelKey: "Technology.labelTopography",
+    defaultLabel: "Cornea",
+    titleKey: "Technology.topographyTitle",
     defaultTitle: "Corneal topography & tomography",
     points: [
       {
-        key: "Technology.item4.point1",
+        key: "Technology.topographyPoint1",
         defaultText:
-          "Creates a detailed map of the front of your eye, including curvature and thickness.",
+          "Creates a detailed ‘map’ of your cornea to assess curvature, thickness and regularity.",
       },
       {
-        key: "Technology.item4.point2",
+        key: "Technology.topographyPoint2",
         defaultText:
           "Essential for planning laser vision correction and toric lens implants.",
       },
     ],
-    noteKey: "Technology.item4.note",
-    defaultNote:
-      "Helps detect irregular astigmatism, keratoconus and other corneal conditions.",
   },
   {
-    id: 5,
-    categoryKey: "Technology.category.tearFilm",
-    defaultCategory: "Tear film & surface",
-    titleKey: "Technology.item5.title",
-    defaultTitle: "Dry eye & ocular surface analysis",
+    id: 4,
+    labelKey: "Technology.labelSurgery",
+    defaultLabel: "Surgery",
+    titleKey: "Technology.microIncisionTitle",
+    defaultTitle: "Micro-incision cataract & lens systems",
     points: [
       {
-        key: "Technology.item5.point1",
+        key: "Technology.microIncisionPoint1",
         defaultText:
-          "Assesses tear quality and eyelid function, which can affect comfort and vision quality.",
+          "Small, self-sealing incisions designed to support faster recovery and visual stability.",
       },
       {
-        key: "Technology.item5.point2",
+        key: "Technology.microIncisionPoint2",
         defaultText:
-          "Guides treatment for dry eye before and after eye surgery.",
-      },
-    ],
-  },
-  {
-    id: 6,
-    categoryKey: "Technology.category.safety",
-    defaultCategory: "Safety & monitoring",
-    titleKey: "Technology.item6.title",
-    defaultTitle: "In-clinic imaging & monitoring",
-    points: [
-      {
-        key: "Technology.item6.point1",
-        defaultText:
-          "On-site imaging allows your surgeon to review changes over time, not just on one visit.",
-      },
-      {
-        key: "Technology.item6.point2",
-        defaultText:
-          "Supports personalised discussions about the right time for surgery or treatment.",
+          "Advanced fluid control and lens delivery systems for safe, predictable procedures.",
       },
     ],
   },
