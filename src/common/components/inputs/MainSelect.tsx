@@ -1,3 +1,4 @@
+// src/common/components/select/MainSelect.tsx
 import React, {
   useEffect,
   useRef,
@@ -7,8 +8,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { IoMdArrowDropdown } from "react-icons/io";
-import Loader from "../loader/spinner/Loader";
 import type { IconType } from "react-icons";
+import Loader from "../loader/spinner/Loader";
 
 interface OptionType {
   id: number;
@@ -17,16 +18,16 @@ interface OptionType {
 
 interface MainSelectProps<T extends OptionType> {
   id?: string;
-  name?: string; // optional for forms
+  name?: string;
   options?: T[];
-  onSelect?: (option: T) => void; // full option callback
-  onChange?: (value: number | null) => void; // controlled value callback (id)
+  onSelect?: (option: T) => void;
+  onChange?: (value: number | null) => void;
   onBlur?: (e?: any) => void;
   disabled?: boolean;
   loading?: boolean;
   placeholder?: string;
   fetchApi?: () => Promise<T[]>;
-  value?: number | null; // controlled value is option.id or null
+  value?: number | null;
   error?: string | null;
   required?: boolean;
   ariaLabel?: string;
@@ -49,9 +50,14 @@ function useClickOutside<T extends HTMLElement>(
   }, [ref, handler]);
 }
 
-const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
+const MainSelectInner = <T extends OptionType>(
+  props: MainSelectProps<T>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _ref: React.Ref<HTMLDivElement>
+) => {
   const {
     id,
+    name,
     options = [],
     onSelect,
     onChange,
@@ -66,6 +72,7 @@ const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
     className,
     Icon,
     label = "",
+    ariaLabel,
   } = props;
 
   const { t, i18n } = useTranslation();
@@ -76,18 +83,19 @@ const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
 
   const [showOptions, setShowOptions] = useState(false);
   const [fetchedOptions, setFetchedOptions] = useState<T[]>([]);
-  const [selectedLabel, setSelectedLabel] = useState<string | null>("");
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const lastSelectedRef = useRef<T | undefined>(undefined);
 
-  // decide displayed options (fetched or from props)
   const displayedOptions = fetchApi ? fetchedOptions : options;
+  const isRTL = i18n.dir() === "rtl";
+  const hasError = Boolean(error);
 
-  // load fetched options lazily when opening
+  // lazy fetch
   useEffect(() => {
     let mounted = true;
     const load = async () => {
@@ -107,7 +115,7 @@ const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showOptions, fetchApi]);
 
-  // sync selected label when value or options change
+  // sync selected label
   useEffect(() => {
     if (value != null) {
       const opt =
@@ -135,9 +143,15 @@ const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
     o.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // keyboard handling
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const openList = () => {
     if (disabled) return;
+    setShowOptions(true);
+    setFocusedIndex((prev) => (prev >= 0 ? prev : filtered.length ? 0 : -1));
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return;
+
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
@@ -178,22 +192,12 @@ const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
       case "Escape":
         e.preventDefault();
         setShowOptions(false);
-        setSearch("");
+        setFocusedIndex(-1);
         break;
       default:
-        // allow typing to search
-        if (!showOptions) {
-          openList();
-        }
+        if (!showOptions) openList();
         break;
     }
-  };
-
-  const openList = () => {
-    if (disabled) return;
-    setShowOptions(true);
-    // focus input after opening
-    setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   const handleToggle = (e?: React.MouseEvent) => {
@@ -201,11 +205,7 @@ const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
     e?.stopPropagation();
     setShowOptions((s) => {
       const next = !s;
-      if (next) {
-        setTimeout(() => inputRef.current?.focus(), 0);
-      } else {
-        setFocusedIndex(-1);
-      }
+      if (!next) setFocusedIndex(-1);
       return next;
     });
   };
@@ -216,95 +216,122 @@ const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
     setShowOptions(false);
     setSearch("");
     setFocusedIndex(-1);
-    if (onSelect) onSelect(option);
-    if (onChange) onChange(option.id);
-    if (onBlur) onBlur(); // inform forms that blur/commit happened
+    onSelect?.(option);
+    onChange?.(option.id);
+    onBlur?.();
   };
 
-  // move focus to the focusedIndex item visually (scrollIntoView)
+  // scroll focused item into view
   useEffect(() => {
     if (focusedIndex < 0) return;
     const listEl = listRef.current;
-    const item = listEl?.querySelector(`[data-index="${focusedIndex}"]`) as
-      | HTMLElement
-      | undefined;
+    const item = listEl?.querySelector(
+      `[data-index="${focusedIndex}"]`
+    ) as HTMLElement | null;
     if (item) {
       item.scrollIntoView({ block: "nearest" });
     }
   }, [focusedIndex]);
 
-  const showLabel = selectedLabel
-    ? t(selectedLabel)
-    : placeholder
-    ? t(placeholder)
-    : "";
+  const labelText = label ? t(label) : undefined;
+  const ariaLabelText = ariaLabel ? t(ariaLabel) : labelText;
+  const showLabel =
+    selectedLabel != null
+      ? t(selectedLabel)
+      : placeholder
+      ? t(placeholder)
+      : "";
 
   return (
     <div className={`w-full ${className || ""}`}>
-      {label && (
+      {labelText && (
         <label
           htmlFor={inputId}
-          className="text-sm md:text-base block mb-2 font-medium text-gray-700"
+          className="block mb-2 text-sm md:text-base font-medium"
+          style={{ color: "var(--field-label)" }}
         >
-          {t(label)}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {labelText}
+          {required && (
+            <span className="ml-1" style={{ color: "var(--field-error-text)" }}>
+              *
+            </span>
+          )}
         </label>
       )}
 
-      <div
-        ref={containerRef}
-        className={`relative w-full`}
-        onClick={(e) => {
-          // open when clicking the box (unless clicking inside list)
-          if ((e.target as Node) === containerRef.current) openList();
-        }}
-      >
+      <div ref={containerRef} className="relative w-full">
+        {/* Combobox trigger */}
         <div
+          id={inputId}
           role="combobox"
           aria-expanded={showOptions}
           aria-controls={listboxId}
           aria-haspopup="listbox"
           aria-owns={listboxId}
           aria-required={required || undefined}
-          aria-invalid={!!error}
-          aria-describedby={error ? errorId : undefined}
-          tabIndex={0}
-          onKeyDown={(e) => {
-            // convert React.KeyboardEvent to our handler
-            handleKeyDown(e as any);
-          }}
-          onBlur={() => {
-            // note: actual blur handling to forms will be called on select or explicitly if needed
-          }}
-          className={`transition text-text-gray duration-150 rounded-lg w-full py-3 px-4 flex-between gap-3 bg-background-gray
-            ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-            ${
-              error
-                ? "ring-2 ring-red-500"
-                : "focus-within:ring-2 focus-within:ring-orangeColor"
-            }`}
+          aria-invalid={hasError}
+          aria-describedby={hasError ? errorId : undefined}
+          aria-label={ariaLabelText}
+          tabIndex={disabled ? -1 : 0}
+          onKeyDown={handleKeyDown}
           onClick={handleToggle}
+          className={`
+            w-full flex items-center justify-between gap-3 rounded-xl px-4 py-3
+            bg-[var(--field-bg)]
+            border
+            ${
+              hasError
+                ? "border-[var(--field-error-border)] ring-1 ring-[var(--field-error-ring)]"
+                : "border-[var(--field-border)] focus-visible:ring-2 focus-visible:ring-[var(--field-focus-ring)] focus-visible:border-[var(--field-focus-border)]"
+            }
+            transition-colors duration-150
+            ${
+              disabled
+                ? "opacity-60 cursor-not-allowed bg-[var(--field-bg-disabled)]"
+                : "cursor-pointer"
+            }
+          `}
         >
-          {/* leading placeholder / selected text */}
-          <div className="flex gap-2">
-            {Icon && <Icon size={20} aria-hidden="true" />}
-            {showLabel}
+          <div className="flex items-center gap-2 min-w-0">
+            {Icon && (
+              <Icon
+                size={20}
+                aria-hidden="true"
+                style={{ color: "var(--field-icon)" }}
+              />
+            )}
+            <span
+              className={`text-sm md:text-base truncate ${
+                selectedLabel
+                  ? "text-[var(--field-text)]"
+                  : "text-[var(--field-placeholder)]"
+              }`}
+            >
+              {showLabel}
+            </span>
           </div>
 
-          {/* chevron */}
-          {!disabled && <IoMdArrowDropdown size={20} aria-hidden="true" />}
+          {!disabled && (
+            <IoMdArrowDropdown
+              size={20}
+              aria-hidden="true"
+              style={{ color: "var(--field-icon)" }}
+            />
+          )}
         </div>
 
-        {/* dropdown */}
+        {/* Dropdown listbox */}
         {showOptions && (
           <div
             id={listboxId}
             role="listbox"
             aria-labelledby={inputId}
             ref={listRef}
-            className={`absolute top-full  w-full max-h-48 overflow-y-auto bg-white border border-slate-400 rounded-lg shadow-lg z-30 ${
-              i18n.language === "ar" ? "right-0" : "left-0"
-            }`}
+            className={`
+              absolute mt-1 w-full max-h-56 overflow-y-auto rounded-xl border shadow-lg z-30
+              bg-[var(--field-bg)] border-[var(--field-border)]
+              ${isRTL ? "right-0" : "left-0"}
+            `}
           >
             {loading ? (
               <div className="w-full flex justify-center py-3">
@@ -316,53 +343,62 @@ const MainSelectInner = <T extends OptionType>(props: MainSelectProps<T>) => {
                 const isSelected = lastSelectedRef.current?.id === item.id;
                 return (
                   <div
+                    key={item.id}
                     role="option"
+                    data-index={idx}
                     aria-selected={isSelected}
                     tabIndex={-1}
-                    key={item.id}
-                    data-index={idx}
                     onMouseEnter={() => setFocusedIndex(idx)}
-                    onMouseDown={(e) => {
-                      // prevent blur before click handler
-                      e.preventDefault();
-                    }}
+                    onMouseDown={(e) => e.preventDefault()}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectChange(item);
                     }}
-                    className={`p-2 cursor-pointer hover:bg-gray-100 ${
-                      isFocused ? "bg-gray-100" : ""
-                    }`}
+                    className={`
+                      px-3 py-2 text-sm md:text-base cursor-pointer
+                      ${
+                        isFocused || isSelected
+                          ? "bg-primaryGreen/10 text-primaryDarkGreen"
+                          : "text-[var(--field-text)] hover:bg-primaryGreen/5"
+                      }
+                    `}
                   >
                     {t(item.name)}
                   </div>
                 );
               })
             ) : (
-              <div className="w-full h-full flex-center p-3">
-                <p className="text-center">{t("no data")}</p>
+              <div className="w-full p-3 text-sm text-[var(--field-placeholder)] text-center">
+                {t("Global.noData", "No options available")}
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* error area (same as MainInput) */}
       <div
         className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          error ? "max-h-10 opacity-100 mt-1" : "max-h-0 opacity-0"
+          hasError ? "max-h-10 opacity-100 mt-1" : "max-h-0 opacity-0"
         }`}
       >
-        <p id={errorId} className="text-red-500 text-xs" role="alert">
-          {error && t(error)}
+        <p
+          id={errorId}
+          className="text-xs"
+          role="alert"
+          style={{ color: "var(--field-error-text)" }}
+        >
+          {hasError && t(error!)}
         </p>
       </div>
+
+      {/* hidden input for HTML forms if محتاج name/value */}
+      {name && <input type="hidden" name={name} value={value ?? ""} readOnly />}
     </div>
   );
 };
 
 const MainSelect = React.forwardRef(MainSelectInner) as <T extends OptionType>(
-  p: MainSelectProps<T> & { ref?: React.Ref<HTMLInputElement> }
+  p: MainSelectProps<T> & { ref?: React.Ref<HTMLDivElement> }
 ) => React.ReactElement;
 
 export default MainSelect;

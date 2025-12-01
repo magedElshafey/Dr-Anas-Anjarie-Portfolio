@@ -7,7 +7,7 @@ export const navConfig: NavItemConfig[] = [
     isIndex: true,
   },
   {
-    name: "About us",
+    name: "About",
   },
   {
     name: "Procedures",
@@ -116,7 +116,7 @@ export const navConfig: NavItemConfig[] = [
     name: "vision simulator",
   },
   {
-    name: "our services",
+    name: "blogs",
   },
   {
     name: "contact us",

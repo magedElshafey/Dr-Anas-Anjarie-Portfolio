@@ -589,3 +589,17 @@ html.a11y-highlight-headings h1 {
     /* blue-50 */
     box-shadow: 0 0 0 2px #60a5fa;
 }
+
+/* hide scroll bar */
+/* globals.css أو main.css */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE & Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}

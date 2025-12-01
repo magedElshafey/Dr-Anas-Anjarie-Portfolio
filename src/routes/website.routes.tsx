@@ -11,16 +11,6 @@ export const websiteRoutes: RouteObject = {
     },
 
     {
-      path: "about-us",
-      element: lazyLoad(
-        () => import("../features/static-pages/pages/about/About")
-      ),
-      handle: {
-        breadcrumb: "About",
-      },
-    },
-
-    {
       path: "procedures",
       element: lazyLoad(
         () => import("../features/producers/pages/ProceduersPage")
@@ -49,7 +39,32 @@ export const websiteRoutes: RouteObject = {
         breadcrumb: "vision simulator",
       },
     },
+    {
+      path: "pre-visit",
+      element: lazyLoad(
+        () => import("../features/pre-visit/page/PreVisitFormPage")
+      ),
 
+      handle: {
+        breadcrumb: "pre visit",
+      },
+    },
+    {
+      path: "blogs",
+      element: lazyLoad(() => import("../features/blogs/pages/Blogs")),
+
+      handle: {
+        breadcrumb: "blogs",
+      },
+    },
+    {
+      path: "about",
+      element: lazyLoad(() => import("../features/about/pages/AboutPage")),
+
+      handle: {
+        breadcrumb: "about",
+      },
+    },
     {
       path: "procedures/:slug/:slug?",
       element: lazyLoad(
