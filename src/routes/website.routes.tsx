@@ -21,9 +21,7 @@ export const websiteRoutes: RouteObject = {
     },
     {
       path: "contact-us",
-      element: lazyLoad(
-        () => import("../features/static-pages/pages/contact/Contact")
-      ),
+      element: lazyLoad(() => import("../features/contact/pages/Contact")),
 
       handle: {
         breadcrumb: "contact",

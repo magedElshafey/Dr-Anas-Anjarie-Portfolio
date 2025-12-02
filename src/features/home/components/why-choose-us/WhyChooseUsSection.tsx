@@ -52,27 +52,6 @@ const WhyChooseUsSection: FC = () => {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-start">
-          {/* Text column */}
-          <div className="space-y-4 md:space-y-5">
-            <SectionIntro title="Why patients choose us" />
-
-            <SectionTitle
-              as="h2"
-              id="why-choose-us-heading" // ✅ مربوط بـ aria-labelledby
-              text="Specialist-led care with advanced lens options"
-            />
-
-            <SectionDescription description="From your first consultation to your final follow-up, our team focuses on safety, clarity of vision and personal support at every step." />
-
-            <ul className="space-y-1.5 text-xs md:text-sm text-[var(--why-text-main)]">
-              {details.map((item, index) => (
-                <SectionDetails key={index} item={item} />
-              ))}
-            </ul>
-
-            <SectionEnding text="Numbers are illustrative and may vary between clinics. Always discuss your individual situation with your surgeon." />
-          </div>
-
           {/* Stats column */}
           <div
             className="
@@ -123,6 +102,26 @@ const WhyChooseUsSection: FC = () => {
               target={98}
               trigger={inView}
             />
+          </div>
+          {/* Text column */}
+          <div className="space-y-4 md:space-y-5">
+            <SectionIntro title="Why patients choose us" />
+
+            <SectionTitle
+              as="h2"
+              id="why-choose-us-heading" // ✅ مربوط بـ aria-labelledby
+              text="Specialist-led care with advanced lens options"
+            />
+
+            <SectionDescription description="From your first consultation to your final follow-up, our team focuses on safety, clarity of vision and personal support at every step." />
+
+            <ul className="space-y-1.5 text-xs md:text-sm text-[var(--why-text-main)]">
+              {details.map((item, index) => (
+                <SectionDetails key={index} item={item} />
+              ))}
+            </ul>
+
+            <SectionEnding text="Numbers are illustrative and may vary between clinics. Always discuss your individual situation with your surgeon." />
           </div>
         </div>
       </motion.div>

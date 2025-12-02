@@ -1,4 +1,4 @@
-import useContactUs from "@/features/static-pages/api/contact/useContactUs";
+import useContactUs from "../api/useContactUs";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";

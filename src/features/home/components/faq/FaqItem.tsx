@@ -1,9 +1,7 @@
-//
-
 // src/features/home/components/faq/FaqItem.tsx
 import React, { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion, AnimatePresence, motion } from "framer-motion";
 import type { FaqItemType } from "./faqData";
 
 type Props = {
@@ -55,8 +53,8 @@ const FaqItem: React.FC<Props> = ({ item, index }) => {
               mt-0.5
               flex h-6 w-6 items-center justify-center
               rounded-full
-              bg-primaryGreen/10
-              text-[11px] font-semibold text-primaryDarkGreen
+              bg-primaryGreen
+              text-[11px] font-semibold text-white
             "
           >
             {index + 1}
@@ -73,33 +71,44 @@ const FaqItem: React.FC<Props> = ({ item, index }) => {
             rounded-full
             border border-[var(--border-subtle,#E5E7EB)]
             bg-[var(--btn-secondary-bg,white)]
-            text-xs font-semibold text-[var(--text-main,#111827)]
+            text-xs font-semibold text-white
           "
         >
           {open ? "−" : "+"}
         </span>
       </button>
 
-      <div
-        id={panelId}
-        role="region"
-        aria-labelledby={buttonId}
-        className={`
-          px-4 md:px-5
-          ${open ? "pb-4 md:pb-5" : "pb-0"}
-        `}
-      >
-        <div
-          className={`
-            text-xs md:text-sm text-[var(--text-muted,#4B5563)]
-            ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
-            overflow-hidden
-            ${shouldReduceMotion ? "" : "transition-all duration-200 ease-out"}
-          `}
-        >
-          <p className="pt-1.5">{t(item.answerKey, item.defaultAnswer)}</p>
-        </div>
-      </div>
+      {/* المحتوى – animated height بدون scroll داخلي */}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            id={panelId}
+            role="region"
+            aria-labelledby={buttonId}
+            initial={
+              shouldReduceMotion
+                ? { opacity: 1, height: "auto" }
+                : { opacity: 0, height: 0 }
+            }
+            animate={{ opacity: 1, height: "auto" }}
+            exit={
+              shouldReduceMotion
+                ? { opacity: 0, height: "auto" }
+                : { opacity: 0, height: 0 }
+            }
+            transition={
+              shouldReduceMotion
+                ? undefined
+                : { duration: 0.22, ease: "easeOut" }
+            }
+            className="px-4 md:px-5 pb-4 md:pb-5"
+          >
+            <p className="pt-1.5 text-xs md:text-sm text-[var(--text-muted,#4B5563)]">
+              {t(item.answerKey, item.defaultAnswer)}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

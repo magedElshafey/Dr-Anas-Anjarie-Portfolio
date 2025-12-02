@@ -15,8 +15,8 @@ const Home = () => {
       <AboutAffiliationsPreviewSection />
       <OurMainProceduresSection />
       <PatientEducationSection />
-      <PreparingForVisitSection />
       <TechnologySection />
+      <PreparingForVisitSection />
       <FaqSection />
     </>
   );

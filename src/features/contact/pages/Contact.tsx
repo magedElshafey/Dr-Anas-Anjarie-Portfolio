@@ -1,9 +1,8 @@
-// src/features/contact/pages/Contact.tsx (أو نفس المسار عندك)
 import MainInput from "@/common/components/inputs/MainInput";
 import MainBtn from "@/common/components/buttons/MainBtn";
 import MainTextArea from "@/common/components/inputs/MainTextArea";
-import useContactusLogic from "./logic/useContactusLogic";
-import useGetContactSettings from "../../api/contact/useGetContactSettings";
+import useContactusLogic from "../logic/useContactusLogic";
+import useGetContactSettings from "../api/useGetContactSettings";
 import FetchHandler from "@/common/api/fetchHandler/FetchHandler";
 import { useTranslation } from "react-i18next";
 import SectionTitle from "@/common/components/sections/SectionTitle";

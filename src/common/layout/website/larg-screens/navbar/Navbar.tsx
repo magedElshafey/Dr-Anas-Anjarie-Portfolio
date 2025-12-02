@@ -52,7 +52,8 @@ const Navbar: React.FC<NavbarType> = ({ logo = "" }) => {
         <div className="flex items-center justify-between gap-4 h-14 lg:h-16 min-w-0">
           {/* Logo */}
           <div className="shrink-0">
-            <Logo logo={logo || ""} />
+            {/*    <Logo logo={logo || ""} /> */}
+            <h1>LOGO</h1>
           </div>
 
           {/* Links (center) */}
